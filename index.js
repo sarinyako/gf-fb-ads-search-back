@@ -5,7 +5,7 @@ const passport = require('passport');
 require('dotenv').config();
 const { exchangeForLongTermToken } = require('./passport');
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 10578; //process.env.PORT || 3001;
 const session = require('express-session');
 const redis = require('redis');
 const RedisStore = require('connect-redis').default;
@@ -103,6 +103,6 @@ app.post('/searchSuggestion', async (req, res) => {
 
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on https://gf-fb-ads-search-back-on4s3.kinsta.app:${PORT}`);
 });
 
