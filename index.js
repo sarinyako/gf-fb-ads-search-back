@@ -4,9 +4,34 @@ const cors = require('cors');
 const passport = require('passport');
 require('dotenv').config();
 const { exchangeForLongTermToken } = require('./passport');
-
 const app = express();
 const PORT = process.env.PORT || 3001;
+const session = require('express-session');
+const redis = require('redis');
+const RedisStore = require('connect-redis').default;
+
+//onst redisClient = new Redis();
+
+// Configure the Redis client
+const redisClient = redis.createClient({
+ host: 'redis-10578.c334.asia-southeast2-1.gce.redns.redis-cloud.com', // If Redis is running locally
+  port: 10578,        // Default Redis port
+});
+
+// Log Redis errors
+redisClient.on('error', function (err) {
+  console.error('Could not connect to Redis', err);
+});
+
+// Session configuration
+app.use(session({
+  store: new RedisStore({ client: redisClient }), // Use Redis as the session store
+  secret: 'NqwPn8QtcPmuHrJQlMGs9d88OFhTa2WP', // Replace with a secure secret
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false }  // Set to true if using HTTPS in production
+}));
+
 
 
 app.use(express.json());
@@ -32,7 +57,7 @@ app.post('/search', async (req, res) => {
        return res.status(401).send('User is not authenticated or token has expired');
      }
     
-    const url = `https://graph.facebook.com/v17.0/search?type=adinterest&q=${query}&access_token=${longTermToken}&limit=100&locale=${locale}&offset=${offset}`;
+    const url = `https://graph.facebook.com/v20.0/search?type=adinterest&q=${query}&access_token=${longTermToken}&limit=100&locale=${locale}&offset=${offset}`;
         const response = await axios.get(url);
         const interests = response.data.data;
         res.json(interests);
@@ -63,7 +88,7 @@ app.post('/searchSuggestion', async (req, res) => {
        return res.status(401).send('User is not authenticated or token has expired');
      }
     
-     const url = `https://graph.facebook.com/v17.0/search?type=adinterestsuggestion&interest_list=["${query}"]&access_token=${longTermToken}&limit=100&locale=${locale}&offset=${offset}`;
+     const url = `https://graph.facebook.com/v20.0/search?type=adinterestsuggestion&interest_list=["${query}"]&access_token=${longTermToken}&limit=100&locale=${locale}&offset=${offset}`;
      const response = await axios.get(url);
         const interests = response.data.data;
         res.json(interests);

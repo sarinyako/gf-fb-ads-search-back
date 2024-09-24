@@ -74,12 +74,12 @@ app.listen(PORT, () => {
 // Function to exchange the short-lived token for a long-term token
 async function exchangeForLongTermToken(shortLivedToken) {
   try {
-    const response = await axios.get('https://graph.facebook.com/v17.0/oauth/access_token', {
+    const response = await axios.get('https://graph.facebook.com/v20.0/oauth/access_token', {
       params: {
         grant_type: 'fb_exchange_token',
         client_id: process.env.FB_APP_ID,
         client_secret: process.env.FB_APP_SECRET,
-        fb_exchange_token: shortLivedToken,
+        fb_exchange_token: process.env.FB_ACCESS_TOKEN,
       },
     });
     return response.data.access_token; // Return the long-term token
