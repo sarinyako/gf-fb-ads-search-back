@@ -8,7 +8,7 @@ const session = require('express-session');
 
 const app = express();
 //const PORT = process.env.PORT || 3002;
-const PORT = 10578;
+const PORT =  process.env.PORT || 10579;
 // Configure express-session middleware
 app.use(session({
   secret: 'your-session-secret',  // Replace with your own session secret
@@ -66,7 +66,7 @@ app.get('/auth/facebook/callback',
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://gf-fb-ads-search-back-on4s3.kinsta.app:${PORT}`);
 });
 
 

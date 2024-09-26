@@ -5,7 +5,7 @@ const passport = require('passport');
 require('dotenv').config();
 const { exchangeForLongTermToken } = require('./passport');
 const app = express();
-const PORT = 10578; //process.env.PORT || 3001;
+const PORT =  process.env.PORT || 10578; //process.env.PORT || 3001;
 const session = require('express-session');
 const redis = require('redis');
 const RedisStore = require('connect-redis').default;
